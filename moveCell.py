@@ -1,11 +1,11 @@
 '''
-moveCell.py - Samuel Johnson - 21/10/23
+moveCell.py - Samuel Johnson - 09/10/23
 '''
 
 import numpy as np
 import math
 import random
-from collisionCell import detectCollision, detectChain
+from collisionCell import *
 
 '''
 Move cells according to leader-follower dynamics

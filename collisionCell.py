@@ -115,10 +115,14 @@ def detectChain(i, cellList, dx, dy, filAngle, lenFilo, cellRad):
 Calculate mean nearest-neighbour distance from cell list
 '''
 def meanDistance(cellList):
+    #Cell counting variable
+    counter = 0
     #Total distance variable
-    avDist = 0
+    dist = 0
     #Calculate nearest neighbour distance for each cell
     for i in range(len(cellList)):
+        #Count cell
+        counter += 1
         #Nearest distance to current cell
         nearDist = float('inf')
         #Iterate over cell list to find nearest neighbour
@@ -128,6 +132,6 @@ def meanDistance(cellList):
             if j != i and eucDist < nearDist:
                     nearDist = eucDist
         #Add nearest distance to total distance
-        avDist += nearDist
+        dist += nearDist
     #Return average distance to nearest neighbour in stream
-    return avDist / len(cellList)
+    return dist / counter
