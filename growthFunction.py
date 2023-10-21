@@ -1,5 +1,5 @@
 '''
-growthFunction.py - Samuel Johnson - 15/10/23
+growthFunction.py - Samuel Johnson - 21/10/23
 '''
 
 #Growth data source
