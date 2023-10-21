@@ -115,11 +115,7 @@ def updateVEGF(VEGFArray, D, chi, lmbd, R, posList, dt, subStep, \
     #Updated VEGF array calculated by Taylor expansion
     #c(x, t + delta t) = c(x, t) + delta t * c'(x, t)
     VEGFArray = VEGFArray + \
-            np.multiply(dt / subStep, diffusion(VEGFArray, D, L)) 
-    #Zero-flux boundary conditions
-    VEGFArray[:, 0] = VEGFArray[:, 1]
-    VEGFArray[:, -1] = VEGFArray[:, -2]
-    VEGFArray = VEGFArray + \
+            np.multiply(dt / subStep, diffusion(VEGFArray, D, L)) + \
             np.multiply(dt / subStep, logistic(VEGFArray, chi)) - \
             np.multiply(dt / subStep, summation(VEGFArray, posList, \
                         lmbd, R, searchRad, L)) - \
@@ -138,11 +134,7 @@ def updateDAN(DANArray, D, chi, lmbd, R, posList, dt, subStep, \
     #Updated DAN array calculated by Taylor expansion
     #c(x, t + delta t) = c(x, t) + delta t * c'(x, t)
     DANArray = DANArray + \
-            np.multiply(dt / subStep, diffusion(DANArray, D, L)) 
-    #Zero-flux boundary conditions
-    DANArray[:, 0] = DANArray[:, 1]
-    DANArray[:, -1] = DANArray[:, -2]
-    DANArray = DANArray - \
+            np.multiply(dt / subStep, diffusion(DANArray, D, L)) - \
             np.multiply(dt / subStep, summation(DANArray, posList, \
                         lmbd, R, searchRad, L)) - \
             np.multiply(dt / subStep, dilution(DANArray, L, Ldot))
