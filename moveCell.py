@@ -266,20 +266,18 @@ def moveCells(VEGFArray, DANArray, cellList, filoNum, lenFilo, lenFiloMax, xi, c
 Switch phenotypes of follower cells ahead of leader cells
 '''
 def updatePhenotype(i, cellList, VEGFArray, epsilon):
-    #Dimensions of VEGFArray 
-    width, length = VEGFArray.shape
     #List of leader cells
     itList = [j for j in cellList if j.cellType == 'L']
-    #Minimum distance variable
-    minDist = float('inf')
+    #Minimum x distance variable
+    minX = float('inf')
     minDistCell = None
-    #Obtain furthest back leader (closest distance to entrance)
+    #Obtain furthest back leader
     for j in itList:
-        if math.sqrt(j.x**2 + (j.y - width / 2)**2) < minDist:
-            minDist = math.sqrt(j.x**2 + (j.y - width / 2)**2)
+        if j.x < minX:
+            minX = j.x
             minDistCell = j
     #Swap cell positions
-    if not minDistCell is None and math.sqrt(i.x**2 + (i.y - width / 2)**2) > minDist + epsilon:
+    if not minDistCell is None and i.x > minDistCell.x + epsilon:
         xTemp = i.x
         yTemp = i.y
         i.x = j.x

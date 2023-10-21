@@ -12,10 +12,10 @@ def lineSegDist(x1, y1, x2, y2, x3, y3):
     #Vertical and horizontal differences
     px = x2 - x1
     py = y2 - y1
-    #Euclidean length of line segment squared
+    #Euclidean length of line (squared)
     distSquared = px**2 + py**2
     #Unit vector
-    u = ((x3 - x1) * px + (y3 - y1) * py) / distSquared
+    u = ((x3 - x1) * px + (y3 - y1) * py) / float(distSquared)
     #Exception cases
     if u > 1:
         u = 1
@@ -27,11 +27,11 @@ def lineSegDist(x1, y1, x2, y2, x3, y3):
     dxLine = x - x3
     dyLine = y - y3
     minDist = math.sqrt(dxLine**2 + dyLine**2)
-    #Return minimum distance between point and line segment
+    #Minimum distance between point and line segment
     return minDist
 
 '''
-Impose volume exclusion in cell movement and partial zero-flux boundary conditions
+Impose volume exclusion in cell movement
 '''
 def detectCollision(i, cellList, dx, dy, filAngle, expLen, cellRad, width, \
                     leadSpeed, folSpeed, DANArray, c0):
