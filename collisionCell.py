@@ -1,5 +1,5 @@
 '''
-collisionCell.py - Samuel Johnson - 09/10/23
+collisionCell.py - Samuel Johnson - 21/10/23
 '''
 
 import math
@@ -88,7 +88,7 @@ def detectChain(i, cellList, dx, dy, filAngle, lenFilo, cellRad):
     #Binary chain detection variable
     detect = False
     #Euclidean cell distance
-    eucDistMax = lenFilo + cellRad
+    eucDistMax = lenFilo
     #Placeholder for detected cell
     cell = 0
     for j in itList:
@@ -127,10 +127,10 @@ def meanDistance(cellList):
         nearDist = float('inf')
         #Iterate over cell list to find nearest neighbour
         for j in range(len(cellList)):
-            if j != i and math.sqrt((cellList[i].x - cellList[j].x)**2 + \
-                    (cellList[i].y - cellList[j].y)**2) < nearDist:
-                    nearDist = math.sqrt((cellList[i].x - cellList[j].x)**2 + \
-                            (cellList[i].y - cellList[j].y)**2)
+            eucDist = math.sqrt((cellList[i].x - cellList[j].x)**2 + \
+                    (cellList[i].y - cellList[j].y)**2)
+            if j != i and eucDist < nearDist:
+                    nearDist = eucDist
         #Add nearest distance to total distance
         dist += nearDist
     #Return average distance to nearest neighbour in stream
