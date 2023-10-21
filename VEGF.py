@@ -7,7 +7,8 @@ import math
 import copy
 from scipy import signal
 from numba import jit, prange
-from pde import DiffusionPDE, ScalarField, UnitGrid
+from scipy.sparse import diags
+from scipy.sparse.linalg import spsolve
 
 '''
 Create array to hold VEGF (initial value = c0)
@@ -39,6 +40,33 @@ def createDANArray(width, length, c0, bcParam, expLen):
                                round(length - expLen)))), axis=1)
     #Return DAN array
     return DANArray
+
+'''
+Calculate and return diffusion term of the PDE (Rescaled) - Implicit
+'''
+def crankNicolsonDiffusion(VEGFArray, D, L, dt):
+    #Mesh dimension
+    meshWit, meshLen = VEGFArray.shape
+    #Lattice spacings
+    dy = 1
+    dx = L / meshLen
+    #Diffusion constant (x) depends on scaling 
+    alpha = D * dt / dx**2
+    beta = D * dt / dy**2
+    #Construct implicit matrix (for simplicity, using periodic boundary conditions)
+    diagonals = [
+    (1 + 2*alpha + 2*beta) * np.ones(meshLen * meshWit),  
+    -alpha * np.ones(meshLen * meshWit - 1),
+    -alpha * np.ones(meshLen * meshWit - 1),
+    -beta * np.ones(meshLen * meshWit - meshLen),
+    -beta * np.ones(meshLen * meshWit - meshLen),
+]
+    offsets = [0, 1, -1, meshLen, -meshLen]
+    A = diags(diagonals, offsets=offsets).tocsc()
+
+    #Time-stepping 
+    b = u.ravel()
+    return spsolve(A, b).reshape((meshWit, meshLen))
 
 '''
 Calculate and return diffusion term of the PDE (Rescaled)
@@ -115,11 +143,12 @@ def updateVEGF(VEGFArray, D, chi, lmbd, R, posList, dt, subStep, \
     #Updated VEGF array calculated by Taylor expansion
     #c(x, t + delta t) = c(x, t) + delta t * c'(x, t)
     VEGFArray = VEGFArray + \
-            np.multiply(dt / subStep, diffusion(VEGFArray, D, L)) + \
             np.multiply(dt / subStep, logistic(VEGFArray, chi)) - \
             np.multiply(dt / subStep, summation(VEGFArray, posList, \
                         lmbd, R, searchRad, L)) - \
             np.multiply(dt / subStep, dilution(VEGFArray, L, Ldot))
+    #Diffusion 
+    VEGFArray = crankNicolsonDiffusion(VEGFArray, D, L, dt)
     #Zero-flux boundary conditions
     VEGFArray[:, 0] = VEGFArray[:, 1]
     VEGFArray[:, -1] = VEGFArray[:, -2]
@@ -133,11 +162,12 @@ def updateDAN(DANArray, D, chi, lmbd, R, posList, dt, subStep, \
                searchRad, L, Ldot):
     #Updated DAN array calculated by Taylor expansion
     #c(x, t + delta t) = c(x, t) + delta t * c'(x, t)
-    DANArray = DANArray + \
-            np.multiply(dt / subStep, diffusion(DANArray, D, L)) - \
+    DANArray = DANArray - \
             np.multiply(dt / subStep, summation(DANArray, posList, \
                         lmbd, R, searchRad, L)) - \
             np.multiply(dt / subStep, dilution(DANArray, L, Ldot))
+    #Diffusion 
+    DANArray = crankNicolsonDiffusion(DANArray, D, L, dt)
     #Zero-flux boundary conditions
     DANArray[:, 0] = DANArray[:, 1]
     DANArray[:, -1] = DANArray[:, -2]
