@@ -42,6 +42,8 @@ if animate:
     date = datetime.datetime.now().strftime('%H-%M-%S')
     os.makedirs('LeaderFollower' + date)
 
+#Scale factor for mesh spacing (for computational speed-up)
+meshScale = 2
 #Simulation runtime
 finTime = 24
 #First cell insertion time
@@ -53,7 +55,7 @@ lengthList = domainLengths(int(finTime + 1))
 #Domain length (μm)
 Len = int(lengthList[0])
 #Length of PDE mesh (for solver on unit-length mesh)
-meshLen = int(lengthList[-1])
+meshLen = int(lengthList[-1] / meshScale)
 #Domain width (μm)
 Wit = 3 * 120
 #Boundary condition smoothing parameter
@@ -117,16 +119,16 @@ for _ in range(repeats):
     #Initialise time
     t = 0
     #Initialise VEGF Mesh (for solver)
-    VEGFMesh = createVEGFArray(Wit//3, meshLen, c0, bcParam)
+    VEGFMesh = createVEGFArray(Wit//(3 * meshScale), meshLen, c0, bcParam)
     #Initialise DAN Mesh (for solver)
-    DANMesh = createDANArray(Wit//3, meshLen, c0, bcParam, DANLen)
+    DANMesh = createDANArray(Wit//(3 * meshScale), meshLen, c0, bcParam, DANLen)
     #Pad VEGF array with empty space on both sides
-    padArray = np.zeros((Wit//3, meshLen))
+    padArray = np.zeros((Wit//(3 * meshScale), meshLen))
     halfPadded = np.vstack((padArray, VEGFMesh))
     VEGFPadded = np.vstack((halfPadded, padArray))
     VEGFMesh = VEGFPadded
     #Pad DAN array with empty space on both sides
-    padArray = np.zeros((Wit//3, meshLen))
+    padArray = np.zeros((Wit//(3 * meshScale), meshLen))
     halfPadded = np.vstack((padArray, DANMesh))
     DANPadded = np.vstack((halfPadded, padArray))
     DANMesh = DANPadded
@@ -182,11 +184,11 @@ for _ in range(repeats):
                 #Update chemoattractant
                 VEGFMesh = updateVEGF(VEGFMesh, D, chi, lmda, cellRad, \
                                       cellList, dt, subStep, searchRad, \
-                                      Len, lenDot)
+                                      Len, Wit, lenDot, meshScale)
                 #Update DAN
                 DANMesh = updateDAN(DANMesh, D, chi, lmda, cellRad, \
                                       cellList, dt, subStep, searchRad, \
-                                      Len, lenDot)
+                                      Len, Wit, lenDot, meshScale)
             #Update VEGF Array
             VEGFArray = cv2.resize(VEGFMesh, (Len, Wit), \
                                    interpolation = cv2.INTER_AREA)

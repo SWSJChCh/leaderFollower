@@ -44,11 +44,11 @@ def createDANArray(width, length, c0, bcParam, expLen):
 '''
 Calculate and return diffusion term of the PDE (Rescaled) - Implicit
 '''
-def crankNicolsonDiffusion(VEGFArray, D, L, dt):
+def crankNicolsonDiffusion(VEGFArray, D, L, W, dt):
     #Mesh dimension
     meshWit, meshLen = VEGFArray.shape
     #Lattice spacings
-    dy = 1
+    dy = W / meshWit
     dx = L / meshLen
     #Diffusion constant (x) depends on scaling 
     alpha = D * dt / dx**2
