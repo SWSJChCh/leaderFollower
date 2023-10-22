@@ -65,7 +65,7 @@ def crankNicolsonDiffusion(VEGFArray, D, L, W, dt):
     A = diags(diagonals, offsets=offsets).tocsc()
 
     #Time-stepping 
-    b = u.ravel()
+    b = VEGFArray.ravel()
     return spsolve(A, b).reshape((meshWit, meshLen))
 
 '''
