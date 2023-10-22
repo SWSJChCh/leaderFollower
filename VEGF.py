@@ -103,13 +103,13 @@ def logistic(VEGFArray, chi):
 '''
 Calculate and return the internalisation term of the PDE (Rescaled)
 '''
-def summation(VEGFArray, cellList, lmbd, R, searchRad, L):
+def summation(VEGFArray, cellList, lmbd, R, searchRad, L, meshScale):
     #Lattice dimensions
     width, length = VEGFArray.shape
     #Mesh dimension
     meshL = length
     #Array to store cell positions
-    cellPositions = np.array([[k.y, k.x * meshL / L] \
+    cellPositions = np.array([[k.y / meshScale, k.x * meshL / (L * meshScale)] \
                                 for k in cellList])
     #Arrays to store the rows and columns for summation
     rows = np.arange(width)[:, np.newaxis]
@@ -117,7 +117,7 @@ def summation(VEGFArray, cellList, lmbd, R, searchRad, L):
     #Compute exponentials in the summation (with re-scaling)
     rowDiff = rows - cellPositions[:, 0][:, np.newaxis, np.newaxis]
     colDiff = cols - cellPositions[:, 1][:, np.newaxis, np.newaxis]
-    summFinArray = np.exp(-((rowDiff**2) + ((L / meshL)**2 * colDiff**2)) \
+    summFinArray = np.exp(-((meshScale * rowDiff**2) + ((L * meshScale / meshL)**2 * colDiff**2)) \
                    / (2 * R**2))
     #Sum contributions from each cell
     summFinArray = np.sum(summFinArray, axis=0)
@@ -139,16 +139,16 @@ def dilution(VEGFArray, L, Ldot):
 Calculate and return an updated VEGF matrix from the VEGF PDE
 '''
 def updateVEGF(VEGFArray, D, chi, lmbd, R, posList, dt, subStep, \
-               searchRad, L, Ldot):
+               searchRad, L, W, Ldot, meshScale):
     #Updated VEGF array calculated by Taylor expansion
     #c(x, t + delta t) = c(x, t) + delta t * c'(x, t)
     VEGFArray = VEGFArray + \
             np.multiply(dt / subStep, logistic(VEGFArray, chi)) - \
             np.multiply(dt / subStep, summation(VEGFArray, posList, \
-                        lmbd, R, searchRad, L)) - \
+                        lmbd, R, searchRad, L, meshScale)) - \
             np.multiply(dt / subStep, dilution(VEGFArray, L, Ldot))
     #Diffusion 
-    VEGFArray = crankNicolsonDiffusion(VEGFArray, D, L, dt)
+    VEGFArray = crankNicolsonDiffusion(VEGFArray, D, L, W, dt)
     #Zero-flux boundary conditions
     VEGFArray[:, 0] = VEGFArray[:, 1]
     VEGFArray[:, -1] = VEGFArray[:, -2]
@@ -159,15 +159,15 @@ def updateVEGF(VEGFArray, D, chi, lmbd, R, posList, dt, subStep, \
 Calculate and return an updated DAN matrix from the DAN PDE
 '''
 def updateDAN(DANArray, D, chi, lmbd, R, posList, dt, subStep, \
-               searchRad, L, Ldot):
+               searchRad, L, W, Ldot, meshScale):
     #Updated DAN array calculated by Taylor expansion
     #c(x, t + delta t) = c(x, t) + delta t * c'(x, t)
     DANArray = DANArray - \
             np.multiply(dt / subStep, summation(DANArray, posList, \
-                        lmbd, R, searchRad, L)) - \
+                        lmbd, R, searchRad, L, meshScale)) - \
             np.multiply(dt / subStep, dilution(DANArray, L, Ldot))
     #Diffusion 
-    DANArray = crankNicolsonDiffusion(DANArray, D, L, dt)
+    DANArray = crankNicolsonDiffusion(DANArray, D, L, W, dt)
     #Zero-flux boundary conditions
     DANArray[:, 0] = DANArray[:, 1]
     DANArray[:, -1] = DANArray[:, -2]
