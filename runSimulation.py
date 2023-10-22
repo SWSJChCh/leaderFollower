@@ -63,9 +63,9 @@ bcParam = 5
 #Number of leader cells
 leadNum = 5
 #Proportion of domain for which DAN is expressed
-DANLen = float(sys.argv[1]) * lengthList[-1]
+DANLen = float(sys.argv[1]) * lengthList[-1] / meshScale
 #Proportion of domain for which zero-flux boundary conditions are expressed
-spanLen = float(sys.argv[2]) * lengthList[-1]
+spanLen = float(sys.argv[2]) * lengthList[-1] / meshScale
 #Timesteps per attempted cell insertion
 insertStep = 1
 #Repeats for data averaging
