@@ -24,4 +24,5 @@ The required libraries can be installed using pip:
 ```bash
 pip install numpy scipy matplotlib numba...
 ```
-## Script Descriptions
+
+
