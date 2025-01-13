@@ -51,3 +51,15 @@ phenotype according to position within streams.
 ### Folders 
 The folders contained in the repository contain the scripts to simulate various scenarios in cranial neural crest migration. 
 
+#### colec12Expression(Original)
+Simulation scripts to analyse confinement to the r4-ba2 pathway for the original model representation of Colec12 protein. 
+
+#### colec12Expression
+Simulation scripts to analyse confinement to the r4-ba2 pathway for the current model representation of Colec12 protein. 
+
+#### trailExpression
+Simulation scripts to analyse confinement to the r4-ba2 pathway for the model representation of Trail protein. 
+
+#### colec12TrailExpression
+Simulation scripts to analyse confinement to the r4-ba2 pathway for the current model representations of Colec12 and Trail
+protein expressed in parallel.
