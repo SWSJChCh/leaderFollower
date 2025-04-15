@@ -59,18 +59,14 @@ phenotype according to position within streams.
 #### runSimulation.py 
 `runSimulation.py` runs the main simulation and outputs a video or a .txt containing simulation data. 
 
-### Folders 
-The folders contained in the repository contain the scripts to simulate various scenarios in cranial neural crest migration. 
+### Execution 
+Code is executed using the runSimulation.py file along with parameters given as command line arguments: 
 
-#### colec12Expression(Original)
-Simulation scripts to analyse confinement to the r4-ba2 pathway for the original model representation of Colec12 protein. 
+```bash
+python runSimulation.py Trail/colec12-proportion Dan-proportion Colec12 Trail 
+```
 
-#### colec12Expression
-Simulation scripts to analyse confinement to the r4-ba2 pathway for the current model representation of Colec12 protein. 
-
-#### trailExpression
-Simulation scripts to analyse confinement to the r4-ba2 pathway for the model representation of Trail protein. 
-
-#### colec12TrailExpression
-Simulation scripts to analyse confinement to the r4-ba2 pathway for the current model representations of Colec12 and Trail
-protein expressed in parallel.
+- Trail/colec12-proportion - the proportion of the domain for which Trail and/or Colec12 are expressed (float in [0, 1])
+- Dan-proportion - the proportion of the domain for which Dan is expressed (float in [0, 1])
+- colec12 - Boolean for Colec12 expression (True/False)
+- Trail - Boolena for Trail expression (True/False)
