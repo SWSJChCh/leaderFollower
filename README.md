@@ -66,7 +66,7 @@ Code is executed using the runSimulation.py file along with parameters given as 
 python runSimulation.py Trail/colec12-proportion Dan-proportion Colec12 Trail 
 ```
 
-- **Trail/colec12-proportion** - The proportion of the domain for which Trail and/or Colec12 are expressed (float in [0, 1])
+- **Trail/Colec12-proportion** - The proportion of the domain for which Trail and/or Colec12 are expressed (float in [0, 1])
 - **Dan-proportion** - The proportion of the domain for which Dan is expressed (float in [0, 1])
-- **colec12** - Boolean for Colec12 expression (True/False)
+- **Colec12** - Boolean for Colec12 expression (True/False)
 - **Trail** - Boolean for Trail expression (True/False)
