@@ -51,6 +51,9 @@ a time-resolved list of domain lengths for use in the main simulation.
 #### insertCell.py 
 `insertCell.py` includes functions that creates leader and follower cell objects. 
 
+#### moveCellColec12.py 
+`moveCellTrail.py` includes functions for cell movement according to chemical cues from Colec12.  
+
 #### moveCellTrail.py 
 `moveCellTrail.py` includes functions for cell movement according to chemical cues from Trail.  
 
