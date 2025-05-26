@@ -51,10 +51,11 @@ a time-resolved list of domain lengths for use in the main simulation.
 #### insertCell.py 
 `insertCell.py` includes functions that creates leader and follower cell objects. 
 
-#### moveCell.py 
-`moveCell.py` is a script that changes with the biological system being modelled. In all cases, it contains a function
-to update the position of cells according to cell-cell and environmental cues and another function to update cell
-phenotype according to position within streams. 
+#### moveCellTrail.py 
+`moveCellTrail.py` includes functions for cell movement according to chemical cues from Trail.  
+
+#### moveCellTrailColec12.py 
+`moveCellTrail.py` includes functions for cell movement according to chemical cues from both Trail and Colec12.  
 
 #### runSimulation.py 
 `runSimulation.py` runs the main simulation and outputs a video or a .txt containing simulation data. 
