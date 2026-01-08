@@ -41,7 +41,7 @@ pip install requirements.txt
 Contains code to simulation r4-ba2 cranial neural crest migration, including surrounding CNCC-free zones adjacent to r3/5. 
 
 #### /doubleStreamCode
-Contains code to simulation r4-ba2 and r6-ba3 cranial neural crest migration, including surrounding CNCC-free zones adjacent to r3/5/7. 
+Contains code to simulation r4-ba2 and r1-ba2 cranial neural crest migration, including surrounding CNCC-free zones adjacent to r1/3/5. 
 
 ### Script Descriptions
 
