@@ -99,8 +99,8 @@ DANLen = int(0.4 * float(1 * lengthList[-1] / meshScale))
 CHEMLen = int(float(1 * lengthList[-1] / meshScale))
 #Proportion of domain for which zero-flux boundary conditions are expressed
 spanLen = 0
-#Timesteps per attempted cell insertion
-insertStep = 10
+#Timesteps per attempted cell insertion (Note that the actual rate of insertion is significantly lower)
+insertStep = 1
 #Repeats for data averaging
 repeats = 1
 
@@ -451,4 +451,5 @@ if not animate:
 #Delete folder used to make MP4
 else:
    os.rmdir('LeaderFollower' + date)
+
 
